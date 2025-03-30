@@ -418,13 +418,15 @@ public class DosLoader extends AbstractLibrarySupportLoader {
 			for (MemoryBlock block : program.getMemory().getBlocks()) {
 				// CS should point to segment for each loaded segment
 				// In case of a data segment that is pointless but do no harm
-				// Any jump/call into the segment should be a far one				
-				SegmentedAddress start = (SegmentedAddress) block.getStart();
+				// Any jump/call into the segment should be a far one	
+		
+				Address start = block.getStart();
 				if (!(start.getAddressSpace() instanceof SegmentedAddressSpace)) {
 					continue;
 				}
+				SegmentedAddress start_ = (SegmentedAddress) start;
 
-				int csValue = start.getSegment();
+				int csValue = start_.getSegment();
 				Address end = block.getEnd();				
 				context.setValue(cs, start, end, BigInteger.valueOf(csValue));
 				context.setValue(ds, start, end, BigInteger.valueOf(dsValue));
